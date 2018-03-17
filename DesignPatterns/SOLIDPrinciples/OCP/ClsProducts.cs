@@ -56,4 +56,79 @@ namespace SOLIDPrinciples.OCP
 
     }//end of class ProductFilter
 
+
+    /*Solution Apply OCP in the following way*/
+
+    internal interface ISpecification<T>
+    {
+        bool IsSatisfied(T t);
+
+    }//end of interface ISpecification
+
+
+    internal interface IFilter<T>
+    {
+        IEnumerable<T> Filter(IEnumerable<T> t, ISpecification<T> Spec);
+    }//end of interface IFilter
+
+    internal class ColorSpecification : ISpecification<ClsProducts>
+    {
+        Color _color;
+        public ColorSpecification(Color color)
+        {
+            _color = color;
+        }
+
+        public bool IsSatisfied(ClsProducts t)
+        {
+            return  t.Color == _color;
+        }//end of function IsSatisfied
+    }//end of class ColorSpecification
+
+
+    internal class SizeSpecification : ISpecification<ClsProducts>
+    {
+        Size _size;
+        public SizeSpecification(Size size)
+        {
+            _size = size;
+        }//end of constructor
+
+        public bool IsSatisfied(ClsProducts prod)
+        {
+            return prod.Size == _size;
+        }//end of function IsSatisfied
+    }//end of class SizeSpecification
+
+    //Combinator
+    internal class AndSpecification : ISpecification<ClsProducts>
+    {
+        ISpecification<ClsProducts> _first, _second;
+
+        public AndSpecification(ISpecification<ClsProducts> first, ISpecification<ClsProducts> second)
+        {
+            _first = first;
+            _second = second;
+        }
+
+        public bool IsSatisfied(ClsProducts prod)
+        {
+            return _first.IsSatisfied(prod) && _second.IsSatisfied(prod);
+        }//end of function IsSatisfied
+
+    }//end of class AndSpecification
+
+    internal class BetterFilter : IFilter<ClsProducts>
+    { 
+        public IEnumerable<ClsProducts> Filter(IEnumerable<ClsProducts> prodList, ISpecification<ClsProducts> Spec)
+        {
+            foreach (var prod in prodList)
+            {
+                if(Spec.IsSatisfied(prod))
+                    yield return prod;
+            }//end of foreach
+        }//end of function Filter 
+
+    }//end of class BetterFilter
+
 }//end of namespace SOLIDPrinciples.OCP

@@ -26,7 +26,7 @@ namespace SOLIDPrinciples
             #endregion
 
             #region OCP
-            ClsProducts objProduct1 = new ClsProducts("Apple", Color.RED, Size.MEDIUM);
+            ClsProducts objProduct1 = new ClsProducts("Apple", Color.RED, Size.SMALL);
             ClsProducts objProduct2 = new ClsProducts("Watermelon", Color.GREEN, Size.MEDIUM);
             ClsProducts objProduct3 = new ClsProducts("Guvava", Color.GREEN, Size.MEDIUM);
 
@@ -37,7 +37,31 @@ namespace SOLIDPrinciples
             foreach(var product in objFilter.FilterByColor(productList, Color.GREEN))
             {
                 Console.WriteLine($"{product.Name} is Green");
-            } 
+            }
+
+            Console.WriteLine("*****************After*******************");
+
+            BetterFilter bf = new BetterFilter();
+            Console.WriteLine("Green Products");
+            foreach (var prod in bf.Filter(productList,new ColorSpecification(Color.GREEN)))
+            {
+                Console.WriteLine($"{prod.Name} is Green");
+            }//end of for each
+
+
+            Console.WriteLine("Small size products");
+            foreach (var prod in bf.Filter(productList, new SizeSpecification(Size.SMALL)))
+            {
+                Console.WriteLine($"{prod.Name} is small in size");
+            }//end of foreach
+
+            Console.WriteLine("Green and Medium size products");
+
+            foreach (var prod in bf.Filter(productList,
+                new AndSpecification(new ColorSpecification(Color.GREEN),new SizeSpecification(Size.MEDIUM))))
+            {
+                Console.WriteLine($"{prod.Name} is green and medium");
+            }//end of foreach 
             #endregion
         }
     }//end of class Program

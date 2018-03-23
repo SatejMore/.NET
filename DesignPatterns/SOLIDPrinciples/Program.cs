@@ -7,6 +7,7 @@ using System.Diagnostics;
 using SOLIDPrinciples.SRP;
 using SOLIDPrinciples.OCP;
 using SOLIDPrinciples.LSP;
+using SOLIDPrinciples.DI;
 
 namespace SOLIDPrinciples
 {
@@ -68,12 +69,24 @@ namespace SOLIDPrinciples
             #endregion
 
             #region LSP
-            Rectangle rec = new Rectangle(2, 3);
-            Console.WriteLine($"{rec} has area {GetArea(rec)}");
+            //Rectangle rec = new Rectangle(2, 3);
+            //Console.WriteLine($"{rec} has area {GetArea(rec)}");
 
-            Rectangle sq = new Square();
-            sq.Width = 4;
-            Console.WriteLine($"{sq} has area {GetArea(sq)}");
+            //Rectangle sq = new Square();
+            //sq.Width = 4;
+            //Console.WriteLine($"{sq} has area {GetArea(sq)}");
+            #endregion
+
+            #region DI
+            Person objParent = new Person { Name = "Rajiv" };
+            Person objChild1 = new Person { Name = "Ajay" };
+            Person objChild2 = new Person { Name = "Sujay" };
+
+            Relationships objRelationShips = new Relationships();
+            objRelationShips.AddParentChild(objParent, objChild1);
+            objRelationShips.AddParentChild(objParent, objChild2);
+
+            ClsResearch objResearch = new ClsResearch(objRelationShips,objParent.Name);
             #endregion
         }
     }//end of class Program
